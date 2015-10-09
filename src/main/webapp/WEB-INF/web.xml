@@ -5,8 +5,8 @@
 			version="3.0"
 			metadata-complete="true">
 
-	<display-name>advertisement</display-name>
-	<description>advertisement</description>
+	<display-name>java-jersey-wishlist</display-name>
+	<description>java-jersey-wishlist</description>
 
 	<!-- Spring configuration -->
 	<listener>
@@ -19,7 +19,7 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:/META-INF/advertisement-spring.xml</param-value>
+		<param-value>classpath:/META-INF/java-jersey-wishlist-spring.xml</param-value>
 	</context-param>
 
 	<!-- Service SDK libraries -->
@@ -52,22 +52,12 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-	<filter>
-		<filter-name>basicAuthenticationFilter</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-		<async-supported>true</async-supported> <!-- filter supports asynchronous processing -->
-	</filter>
-	<filter-mapping>
-		<filter-name>basicAuthenticationFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
 	<servlet>
 		<servlet-name>jerseyServlet</servlet-name>
 		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
 		<init-param>
 			<param-name>javax.ws.rs.Application</param-name>
-			<param-value>com.hackfest.advertisement.JerseyApplication</param-value>
+			<param-value>com.sap.wishlist.JerseyApplication</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 		<async-supported>true</async-supported> <!-- servlet supports asynchronous processing -->

@@ -3,11 +3,11 @@
     "references":[
         {
             "namespace": "api",
-            "description": "API definition of advertisement",
+            "description": "API definition of java-jersey-wishlist",
             "path": "/",
             "type": "raml",
-            "fileName": "advertisement.raml",
-            "packageName": "com.hackfest.advertisement.api.generated",
+            "fileName": "java-jersey-wishlist.raml",
+            "packageName": "com.sap.wishlist.api.generated",
             "async": false
         }
     ]

@@ -10,37 +10,40 @@
 		<relativePath />
 	</parent>
 
-	<groupId>com.hackfest.advertisement</groupId>
-	<artifactId>advertisement</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<groupId>com.sap.cloud.yaas.service-sdk.example</groupId>
+	<artifactId>java-jersey-wishlist</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<properties>
-		<!-- YaaS Service SDK Version -->
+		<!-- SAP projects -->
 		<service-sdk.version>4.3.4</service-sdk.version>
 
-		<!-- Library Versions -->
+		<!-- plugins -->
+		<jetty.plugin.version>9.3.2.v20150730</jetty.plugin.version>
+
+		<!-- libraries -->
 		<jaxrs.version>2.0.1</jaxrs.version>
 		<jersey.version>2.19</jersey.version>
 		<javax.servlet.version>3.1.0</javax.servlet.version>
 		<spring.version>4.2.0.RELEASE</spring.version>
 		<cors.filter.version>2.4</cors.filter.version>
 
-		<!-- Test Library Versions -->
+		<!-- test libraries -->
 		<junit.version>4.12</junit.version>
-
-		<!-- Plugin Versions -->
-		<jetty.plugin.version>9.2.6.v20141205</jetty.plugin.version>
 	</properties>
 
 	<dependencies>
-		<!-- YaaS Service SDK Dependencies -->
 		<dependency>
 			<groupId>com.sap.cloud.yaas.service-sdk</groupId>
 			<artifactId>service-sdk-libraries</artifactId>
 			<version>${service-sdk.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>com.sap.cloud.yaas.service-sdk</groupId>
+			<artifactId>service-sdk-authorization</artifactId>
+			<version>${service-sdk.version}</version>
+		</dependency>
 		<!-- Jersey Dependencies -->
 		<dependency>
 			<groupId>javax.ws.rs</groupId>
@@ -58,17 +61,46 @@
 			<version>${jersey.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
 			<artifactId>jersey-spring3</artifactId>
 			<version>${jersey.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-beans</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-context</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-web</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.ext</groupId>
 			<artifactId>jersey-bean-validation</artifactId>
 			<version>${jersey.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+			<version>${jersey.version}</version>
+			<scope>test</scope>
+		</dependency>
 
-		<!-- Spring Dependencies -->
+		<!-- Spring dependencies -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -81,22 +113,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-expression</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context-support</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
@@ -107,19 +124,13 @@
 
 		<!-- Servlet Dependencies -->
 		<dependency>
-			<groupId>com.thetransactioncompany</groupId>
-			<artifactId>cors-filter</artifactId>
-			<version>${cors.filter.version}</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${javax.servlet.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Testing Dependencies-->
+		<!-- testing -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -132,31 +143,76 @@
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- CORS support -->
 		<dependency>
-			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
-			<artifactId>jersey-test-framework-provider-grizzly2</artifactId>
-			<version>${jersey.version}</version>
-			<scope>test</scope>
+			<groupId>com.thetransactioncompany</groupId>
+			<artifactId>cors-filter</artifactId>
+			<version>${cors.filter.version}</version>
 		</dependency>
 	</dependencies>
 
 	<build>
-		<finalName>advertisement</finalName>
+		<finalName>java-jersey-wishlist</finalName>
 		<plugins>
-			<!-- Plugin required to build API models and resources. This dependency 
-				should not be removed. -->
-			<plugin>
-				<groupId>com.sap.cloud.yaas.service-sdk</groupId>
-				<artifactId>service-sdk-generator-maven-plugin</artifactId>
-				<version>${service-sdk.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate-service</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+        
+            <plugin>
+                <groupId>com.sap.cloud.yaas.service-sdk</groupId>
+                <artifactId>service-sdk-generator-maven-plugin</artifactId>
+                <version>${service-sdk.version}</version>
+                <executions>
+                    <execution>
+                        <id>Service</id>
+                        <goals>
+                            <goal>generate-service</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>Customer</id>
+                        <goals>
+                            <goal>generate-client</goal>
+                        </goals>
+                        <configuration>
+                            <sourceRamlUri>https://api.yaas.io/hybris/customer/b1/api-console/raml/api/api-specification.raml</sourceRamlUri>
+                            <basePackage>com.sap.wishlist.client.customer</basePackage>
+                        </configuration>
+                    </execution>
+                    
+                    <execution>
+                        <id>DocumentRepository</id>
+                        <goals>
+                            <goal>generate-client</goal>
+                        </goals>
+                        <configuration>
+                            <sourceRamlUri>https://api.yaas.io/hybris/document/b2/api-console/raml/api/document.raml</sourceRamlUri>
+                            <basePackage>com.sap.wishlist.client.documentrepository</basePackage>
+                        </configuration>
+                    </execution>
+                    
+                    <execution>
+                        <id>EMail</id>
+                        <goals>
+                            <goal>generate-client</goal>
+                        </goals>
+                        <configuration>
+                            <sourceRamlFile>emailservice.raml</sourceRamlFile>
+                            <basePackage>com.sap.wishlist.client.email</basePackage>
+                        </configuration>
+                    </execution>
+                    
+                    <execution>
+                        <id>MediaRepository</id>
+                        <goals>
+                            <goal>generate-client</goal>
+                        </goals>
+                        <configuration>
+                            <sourceRamlUri>https://api.yaas.io/hybris/media/b2/api-console/raml/api/media.raml</sourceRamlUri>
+                            <basePackage>com.sap.wishlist.client.mediaRepository</basePackage>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
@@ -168,6 +224,8 @@
 					</webApp>
 				</configuration>
 			</plugin>
+
+
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -187,6 +245,7 @@
 										<versionRange>[${service-sdk.version},)</versionRange>
 										<goals>
 											<goal>generate-service</goal>
+											<goal>generate-client</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
