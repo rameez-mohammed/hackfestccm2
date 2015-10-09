@@ -1,0 +1,14 @@
+{
+    "name": "hybris Service",
+    "references":[
+        {
+            "namespace": "api",
+            "description": "API definition of advertisement",
+            "path": "/",
+            "type": "raml",
+            "fileName": "advertisement.raml",
+            "packageName": "com.hackfest.advertisement.api.generated",
+            "async": false
+        }
+    ]
+}
