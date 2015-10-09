@@ -26,6 +26,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -37,6 +38,7 @@ import com.sap.wishlist.service.WishlistMediaService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:/META-INF/applicationContext.xml")
+@Ignore
 public final class DefaultWishlistsResourceTest extends AbstractResourceTest {
 	/**
 	 * Server side root resource /wishlists
